@@ -1,0 +1,36 @@
+{
+  "name": "front",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "env-cmd -f .env.next next dev",
+    "build": "env-cmd -f .env.next next build",
+    "start": "env-cmd -f .env.next next start",
+    "lint": "env-cmd -f .env.next next lint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
+    "@mui/material-nextjs": "^7.1.1",
+    "axios": "^1.10.0",
+    "dotenv": "^16.5.0",
+    "next": "^15.3.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.3",
+    "@types/react": "19.1.8",
+    "env-cmd": "^10.1.0",
+    "eslint": "9.29.0",
+    "eslint-config-next": "15.3.4",
+    "typescript": "5.8.3"
+  }
+}
