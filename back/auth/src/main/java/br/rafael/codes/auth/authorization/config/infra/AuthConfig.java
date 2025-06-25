@@ -28,7 +28,6 @@ public class AuthConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/v1/**")
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT")
-        //Alterar para o domínio do front localhost:3000
         .allowedOrigins(url)
         .allowedHeaders("*")
         .exposedHeaders("Authorization");
