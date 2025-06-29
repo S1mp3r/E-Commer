@@ -30,4 +30,12 @@ public interface UsuarioRepositoryCustom {
      * @return Usuário encontrado, se não encontrar retorna vazio.
      */
     Optional<Usuario> findDuplicatedData(String email, String password);
+
+    /**
+     * Busca um usuário pelo email.
+     * 
+     * @param email Email do usuário.
+     * @return Usuário encontrado.
+     */
+    Optional<Usuario> findUserByEmail(String email);
 }

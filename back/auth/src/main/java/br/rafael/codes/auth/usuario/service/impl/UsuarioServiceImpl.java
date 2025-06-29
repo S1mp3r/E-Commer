@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
+import br.rafael.codes.auth.exceptions.DataNotFoundException;
 import br.rafael.codes.auth.exceptions.DuplicatedDataException;
 import br.rafael.codes.auth.exceptions.UnauthorizedUserException;
 import br.rafael.codes.auth.usuario.entity.UserRole;
@@ -33,6 +34,12 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     @Override
     public List<Usuario> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Usuario findUserByEmail(String email) throws DataNotFoundException {
+        return repository.findUserByEmail(email).orElseThrow(() -> 
+            new DataNotFoundException("Usuário nao encontrado."));
     }
 
     @Override

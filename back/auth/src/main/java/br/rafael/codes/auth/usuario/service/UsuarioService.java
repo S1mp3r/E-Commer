@@ -3,6 +3,7 @@ package br.rafael.codes.auth.usuario.service;
 import java.util.List;
 
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
+import br.rafael.codes.auth.exceptions.DataNotFoundException;
 import br.rafael.codes.auth.exceptions.DuplicatedDataException;
 import br.rafael.codes.auth.usuario.entity.Usuario;
 
@@ -29,4 +30,13 @@ public interface UsuarioService {
      * @return uma lista de usuários cadastrados no sistema.
      */
     List<Usuario> findAll();
+
+    /**
+     * Busca um usuário pelo email.
+     * 
+     * @param email Email do usuário.
+     * @return Usuário encontrado.
+     * @throws DataNotFoundException 
+     */
+    Usuario findUserByEmail(String email) throws DataNotFoundException;
 }

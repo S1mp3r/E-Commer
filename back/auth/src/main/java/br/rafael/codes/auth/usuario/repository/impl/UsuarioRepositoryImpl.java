@@ -73,4 +73,26 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryCustom {
         }
     }
 
+    @Override
+    public Optional<Usuario> findUserByEmail(String email) {
+        Map<String, Object> params = new HashMap<>();
+        
+        String query = "select u from Usuario u ";
+        String where = "where 1=1 ";
+
+        if(!AuthUtils.isEmptyString(email)) {
+            params.put("email", email);
+            where += "and u.email = :email ";
+        }
+
+        TypedQuery<Usuario> user = em.createQuery(query + where, Usuario.class);
+        
+        params.forEach(user::setParameter);
+
+        try {
+            return Optional.ofNullable(user.getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 }
