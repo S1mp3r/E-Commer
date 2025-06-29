@@ -7,11 +7,11 @@ export default function Page() {
   const router = useRouter();
 
   const handleClickSignIn = () => {
-    router.push("/signin"); // navega para /signin
+    router.push("/signin");
   };
 
   const handleClickSignUp = () => {
-    router.push("/signup"); // caso tenha a rota de cadastro em /signup
+    router.push("/signup");
   };
 
   return (
