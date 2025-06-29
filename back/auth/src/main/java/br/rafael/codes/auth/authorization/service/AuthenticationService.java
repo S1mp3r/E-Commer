@@ -3,6 +3,7 @@ package br.rafael.codes.auth.authorization.service;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
+import br.rafael.codes.auth.exceptions.DataNotFoundException;
 import br.rafael.codes.auth.exceptions.DuplicatedDataException;
 
 /**
@@ -27,6 +28,7 @@ public interface AuthenticationService {
      * 
      * @param userToSignUp Corpo de Autenticação.
      * @return Token de Autenticação.
+     * @throws DataNotFoundException 
      */
-    String authenticate(UsernamePasswordAuthenticationToken userToSignUp);
+    String authenticate(UsernamePasswordAuthenticationToken userToSignUp) throws DataNotFoundException;
 }

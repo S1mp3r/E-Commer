@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
 import br.rafael.codes.auth.authorization.service.AuthenticationService;
+import br.rafael.codes.auth.exceptions.DataNotFoundException;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @since 24.06.2025
  */
 @RestController
-@RequestMapping("/v1/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     @Autowired
@@ -33,7 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> login(@RequestBody AuthenticationDTO auth) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationDTO auth) throws DataNotFoundException {
         try {
             var userNamePassword = new UsernamePasswordAuthenticationToken(auth.getEmail(), auth.getPassword());
             String token = service.authenticate(userNamePassword);
