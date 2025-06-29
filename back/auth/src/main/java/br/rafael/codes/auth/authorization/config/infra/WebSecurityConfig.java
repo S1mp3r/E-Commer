@@ -20,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * Classe responsável pela configuração de segurança da API.
  * 
@@ -43,9 +45,16 @@ public class WebSecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/v1/auth/**").permitAll()
-                .anyRequest().authenticated())
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+            .exceptionHandling(handler -> handler
+                .authenticationEntryPoint((req, res, ex) -> 
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+            )
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -58,8 +67,9 @@ public class WebSecurityConfig {
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/v1/**", configuration);
+        source.registerCorsConfiguration("/api/v1/**", configuration);
         return source;
     }
 
