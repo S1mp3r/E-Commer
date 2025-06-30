@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useContext } from "react";
-import { AppContext } from "@/components/context/AppContext";
+import { useContext } from "react";
+import { AppContext } from "@components/context/AppContext";
 
 export function GlobalPage() {
   const { notify, error, isLoading } = useContext(AppContext);
