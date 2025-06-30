@@ -1,6 +1,6 @@
-import { Base } from "./Base";
+import { BaseUrl } from "./BaseUrl";
 
-export class ApiService extends Base {
+export class ApiService extends BaseUrl {
   static signUp({ email, password }) {
     return super.post({
       url: "/api/v1/auth/register",
