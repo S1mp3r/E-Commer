@@ -61,6 +61,8 @@ export class BaseUrl {
       BaseUrl.onError();
     }
 
-    throw error.response.data.error;
+    throw error.response.data.error
+      ? error.response.data.error
+      : error.response.data;
   }
 }
