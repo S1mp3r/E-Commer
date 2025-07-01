@@ -33,13 +33,10 @@ export function SignUpForms() {
         email: userEmail,
         password: userPassword,
       });
-      if (response) {
-        if (response.status === 201) {
-          localStorage.setItem("token", response.data);
-          route.push("/signin");
-        } else {
-          alert(response.data.message);
-        }
+
+      if (response && response.status === 201) {
+        localStorage.setItem("token", response.data);
+        route.push("/signin");
       }
     }
   };

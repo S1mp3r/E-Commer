@@ -33,13 +33,9 @@ export function SignInForms() {
         password: userPassword,
       });
 
-      if (response) {
-        if (response.status === 201) {
-          localStorage.setItem("token", response.data);
-          route.push("/homepage");
-        } else {
-          alert(response.data.message);
-        }
+      if (response && response.status === 201) {
+        localStorage.setItem("token", response.data);
+        route.push("/homepage");
       }
     }
   };

@@ -51,18 +51,17 @@ export class BaseUrl {
   }
 
   static handleError(error) {
-    console.log("Requisição fracassou: ", error?.response?.data);
+    const exception = error?.response?.data;
+    console.log("Requisição fracassou: ", exception);
 
     if (
-      error.response.status === 401 &&
+      error?.response?.status === 401 &&
       typeof BaseUrl.onError === "function"
     ) {
       localStorage.removeItem("token");
       BaseUrl.onError();
     }
 
-    throw error.response.data.error
-      ? error.response.data.error
-      : error.response.data;
+    throw exception ? exception?.error : exception;
   }
 }

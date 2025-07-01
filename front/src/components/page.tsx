@@ -1,10 +1,9 @@
 "use client";
-
 import { useContext } from "react";
 import { AppContext } from "@components/context/AppContext";
 
 export function GlobalPage() {
-  const { notify, error, isLoading } = useContext(AppContext);
+  const { isLoading } = useContext(AppContext);
 
   if (isLoading) {
     return (
