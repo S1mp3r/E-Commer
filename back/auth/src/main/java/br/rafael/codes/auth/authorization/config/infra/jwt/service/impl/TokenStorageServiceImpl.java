@@ -41,6 +41,7 @@ public class TokenStorageServiceImpl implements TokenStorageService {
         return repository.findById(id);
     }
 
+    @Override
     public boolean exists(UUID id) {
         return repository.existsById(id);
     }
