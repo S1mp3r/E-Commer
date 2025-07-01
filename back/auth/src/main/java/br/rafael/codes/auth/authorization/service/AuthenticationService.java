@@ -31,4 +31,12 @@ public interface AuthenticationService {
      * @throws DataNotFoundException 
      */
     String authenticate(UsernamePasswordAuthenticationToken userToSignUp) throws DataNotFoundException;
+
+    /**
+     * Desloga um usuário.
+     * 
+     * @param token Token de Autenticação.
+     * @throws Exception 
+     */
+    void logout(String token) throws Exception;
 }

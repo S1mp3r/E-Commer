@@ -41,8 +41,8 @@ public class SecurityFilter extends OncePerRequestFilter{
     private UsuarioServiceImpl usuarioService;
 
     private static final List<String> PUBLIC_PATHS = List.of(
-        "/api/v1/auth/login",
-        "/api/v1/auth/register"
+        "/auth/v1/login",
+        "/auth/v1/register"
     );
 
     @SuppressWarnings("null")

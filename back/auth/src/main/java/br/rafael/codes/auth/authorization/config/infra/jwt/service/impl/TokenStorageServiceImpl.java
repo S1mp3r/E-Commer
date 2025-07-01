@@ -55,7 +55,7 @@ public class TokenStorageServiceImpl implements TokenStorageService {
         tokenEntity.setCriadoEm(Instant.now());
         tokenEntity.setExpiraEm(tokenDecoded.getExpiresAt().toInstant());
 
-        repository.saveAndFlush(tokenEntity);
+        repository.save(tokenEntity);
     }
 
     @Override

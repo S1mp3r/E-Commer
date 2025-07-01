@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
 import br.rafael.codes.auth.exceptions.DataNotFoundException;
@@ -45,6 +46,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void signUp(AuthenticationDTO auth) throws Exception {
 
         final Usuario usuario = new Usuario();
@@ -67,7 +69,6 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     }
 
     @Override
-    @Cacheable(value = "usuarios", key = "#username", unless = "#result == null")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByEmail(username);
     }

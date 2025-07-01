@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres
+    container_name: postgres-auth
     restart: unless-stopped
     env_file:
       - .env.postgres.auth

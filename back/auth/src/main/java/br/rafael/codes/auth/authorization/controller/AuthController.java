@@ -16,8 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
  * Classe de Controle de Autenticação.
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @since 24.06.2025
  */
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("auth/v1")
 public class AuthController {
 
     @Autowired
@@ -38,7 +40,7 @@ public class AuthController {
         try {
             var userNamePassword = new UsernamePasswordAuthenticationToken(auth.getEmail(), auth.getPassword());
             String token = service.authenticate(userNamePassword);
-            URI uri = URI.create("/v1/auth/login");
+            URI uri = URI.create("/auth/v1/login");
 
             return ResponseEntity.created(uri).body(token);
         } catch (AuthenticationException e) {
@@ -51,8 +53,14 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody AuthenticationDTO auth) throws Exception {
         service.signUp(auth);
 
-        URI uri = URI.create("/v1/auth/login");
+        URI uri = URI.create("/auth/v1/login");
         return ResponseEntity.created(uri).build();
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader ("Authorization") String token) throws Exception {
+        service.logout(token);
+        return ResponseEntity.noContent().build();
     }
 
 }

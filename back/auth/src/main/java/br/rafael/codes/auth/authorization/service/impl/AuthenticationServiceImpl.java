@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import br.rafael.codes.auth.authorization.config.infra.jwt.entity.TokenJwt;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenService;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenStorageService;
@@ -37,11 +41,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private TokenStorageService tokenStorageService;
 
     @Override
+    @Transactional
     public void signUp(AuthenticationDTO auth) throws Exception {
         usuarioService.signUp(auth);
     }
 
     @Override
+    @Transactional
     public String authenticate(UsernamePasswordAuthenticationToken userToSignUp) throws DataNotFoundException {
         var authorized = authenticationManager.authenticate(userToSignUp);
 
@@ -53,5 +59,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return tokenService.generateKey((Usuario) authorized.getPrincipal());
         }
         return token.getToken();
+    }
+
+    @Override
+    @Transactional
+    public void logout(String token) throws Exception {
+        DecodedJWT tokenValidated = tokenService.validateToken(token);
+
+        Usuario sessionUser = usuarioService.findUserByEmail(tokenValidated.getSubject());
+        tokenService.deleteToken(sessionUser.getId());
     }
 }
