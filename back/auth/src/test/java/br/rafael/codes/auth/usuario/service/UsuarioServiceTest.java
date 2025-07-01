@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import br.rafael.codes.auth.BaseServiceTest;
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
@@ -37,8 +38,6 @@ import br.rafael.codes.auth.usuario.service.impl.UsuarioServiceImpl;
 @DisplayName("Testes Unitario para UsuarioService")
 public class UsuarioServiceTest extends BaseServiceTest {
 
-    private String email = "teste@exemplo.com";
-    private String senha = "123456";
     private AuthenticationDTO auth;
 
     @InjectMocks
@@ -68,10 +67,10 @@ public class UsuarioServiceTest extends BaseServiceTest {
         void sucess_findUsers() {
             when(repositoryMock.findAll()).thenReturn(List.of(mock(Usuario.class)));
 
-            List<?> result = target.findAll();
+            List<?> actual = target.findAll();
 
-            assertNotNull(result, "Lista de Usuários nao pode ser nula.");
-            assertNotEquals(0, result.size(), "Lista de Usuários nao pode ser vazia.");
+            assertNotNull(actual, "Lista de Usuários nao pode ser nula.");
+            assertNotEquals(0, actual.size(), "Lista de Usuários nao pode ser vazia.");
         }
 
         @Test
@@ -79,10 +78,10 @@ public class UsuarioServiceTest extends BaseServiceTest {
         void sucess_empty_list() {
             when(repositoryMock.findAll()).thenReturn(List.of());
 
-            List<Usuario> result = target.findAll();
+            List<Usuario> actual = target.findAll();
 
-            assertNotNull(result, "Lista de Usuários tem que estar nula.");
-            assertEquals(0, result.size(), "Lista de Usuários deve ter o seu tamanho zerado.");
+            assertNotNull(actual, "Lista de Usuários tem que estar nula.");
+            assertEquals(0, actual.size(), "Lista de Usuários deve ter o seu tamanho zerado.");
         }
     }
 
@@ -95,9 +94,9 @@ public class UsuarioServiceTest extends BaseServiceTest {
         void sucess_findUser() throws DataNotFoundException {
             when(repositoryMock.findUserByEmail(anyString())).thenReturn(Optional.of(mock(Usuario.class)));
 
-            Usuario result = target.findUserByEmail(email);
+            Usuario actual = target.findUserByEmail(email);
 
-            assertNotNull(result, "Usuário nao pode ser nulo.");
+            assertNotNull(actual, "Usuário nao pode ser nulo.");
         }
 
         @Test
@@ -136,8 +135,10 @@ public class UsuarioServiceTest extends BaseServiceTest {
     @Test
     @DisplayName("Teste para o loadUserByUsername quando vem algo na lista")
     void sucess_loadUser() throws Exception {
-        when(repositoryMock.findByEmail(anyString())).thenReturn(mock(Usuario.class));
+        when(repositoryMock.findByEmail(anyString())).thenReturn(mock(UserDetails.class));
 
-        target.loadUserByUsername(email);
+        UserDetails actual = target.loadUserByUsername(email);
+
+        assertNotNull(actual, "Usuário nao pode ser nulo.");
     }
 }
