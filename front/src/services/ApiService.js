@@ -26,4 +26,10 @@ export class ApiService extends BaseUrl {
       url: "/auth/v1/logout",
     });
   }
+
+  static test() {
+    return super.get({
+      url: "/ecommerce/api/v1/init",
+    });
+  }
 }
