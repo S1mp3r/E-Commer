@@ -21,7 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.rafael.codes.auth.BaseServiceTest;
+import br.rafael.codes.auth.ServiceTestConfigurations;
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
 import br.rafael.codes.auth.exceptions.DataNotFoundException;
 import br.rafael.codes.auth.exceptions.DuplicatedDataException;
@@ -36,7 +36,7 @@ import br.rafael.codes.auth.usuario.service.impl.UsuarioServiceImpl;
  * @since 01.07.2025
  */
 @DisplayName("Testes Unitario para UsuarioService")
-public class UsuarioServiceTest extends BaseServiceTest {
+public class UsuarioServiceTest extends ServiceTestConfigurations {
 
     private AuthenticationDTO auth;
 

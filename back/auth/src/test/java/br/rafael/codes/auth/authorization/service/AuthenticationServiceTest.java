@@ -25,7 +25,7 @@ import org.springframework.security.core.Authentication;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import br.rafael.codes.auth.BaseServiceTest;
+import br.rafael.codes.auth.ServiceTestConfigurations;
 import br.rafael.codes.auth.authorization.config.infra.jwt.entity.TokenJwt;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenService;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenStorageService;
@@ -40,7 +40,7 @@ import br.rafael.codes.auth.usuario.service.UsuarioService;
  * @since 01.07.2025
  */
 @DisplayName("Testes Unitários para o AuthenticationService")
-public class AuthenticationServiceTest extends BaseServiceTest {
+public class AuthenticationServiceTest extends ServiceTestConfigurations {
 
     private Authentication auth;
     private Usuario usuario;

@@ -9,7 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("Test")
-public abstract class BaseServiceTest {
+public abstract class ServiceTestConfigurations {
 
     final public String email = "teste@exemplo.com";
     final public String senha = "123456";

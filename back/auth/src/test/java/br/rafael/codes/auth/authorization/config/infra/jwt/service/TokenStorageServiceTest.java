@@ -22,7 +22,7 @@ import org.mockito.Mock;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import br.rafael.codes.auth.BaseServiceTest;
+import br.rafael.codes.auth.ServiceTestConfigurations;
 import br.rafael.codes.auth.authorization.config.infra.jwt.entity.TokenJwt;
 import br.rafael.codes.auth.authorization.config.infra.jwt.repository.TokenJwtRepository;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.impl.TokenStorageServiceImpl;
@@ -35,7 +35,7 @@ import br.rafael.codes.auth.usuario.entity.Usuario;
  * @since 01.07.2025
  */
 @DisplayName("Testes unitários para TokenStorageService")
-public class TokenStorageServiceTest extends BaseServiceTest {
+public class TokenStorageServiceTest extends ServiceTestConfigurations {
 
     private DecodedJWT decoded;
     private TokenJwt token;
