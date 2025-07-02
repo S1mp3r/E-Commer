@@ -41,21 +41,16 @@ public class TokenService {
     private ApplicationContext context;
 
     /**
-     * Gera um token para o usuário.
+     * Cria um token para o usuário e armazena em banco.
      * 
      * @param user Usuário a ter seu token gerado.
      * @return Token valido gerado.
      */
-    public String generateKey(Usuario user) {
+    public String createToken(Usuario user) {
         final Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         try {
-            var token = JWT.create()
-                .withIssuer(issuer)
-                .withSubject(user.getEmail())
-                .withExpiresAt(generateExpirationDate())
-                .sign(algorithm)
-            ;
+            var token = generateKey(algorithm);
 
             redisTkStorageService.createToken(user, getDecodedToken(token), token);
 
@@ -63,6 +58,23 @@ public class TokenService {
         } catch (JWTCreationException e) {
             throw new RuntimeException("Error while generating token", e);
         }
+    }
+
+    /**
+     * Cria um token para o usuário.
+     * 
+     * @param algorithm
+     * @return Token valido gerado.
+     */
+    public String generateKey(Algorithm algorithm) {
+        if(algorithm == null) {
+            algorithm = Algorithm.HMAC256(secretKey);
+        }
+
+        return JWT.create()
+            .withIssuer(issuer)
+            .withExpiresAt(generateExpirationDate())
+            .sign(algorithm);
     }
 
     /**

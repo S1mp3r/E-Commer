@@ -2,6 +2,9 @@ package br.rafael.codes.auth.usuario.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
 import br.rafael.codes.auth.exceptions.DataNotFoundException;
 import br.rafael.codes.auth.exceptions.DuplicatedDataException;
@@ -39,4 +42,13 @@ public interface UsuarioService {
      * @throws DataNotFoundException 
      */
     Usuario findUserByEmail(String email) throws DataNotFoundException;
+
+    /**
+     * Busca um usuário pelo username.
+     * 
+     * @param username Username do usuário.
+     * @return Usuário encontrado.
+     * @throws UsernameNotFoundException
+     */
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

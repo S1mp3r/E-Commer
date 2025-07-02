@@ -19,7 +19,7 @@ import br.rafael.codes.auth.authorization.config.infra.jwt.entity.TokenJwt;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenService;
 import br.rafael.codes.auth.exceptions.DataNotFoundException;
 import br.rafael.codes.auth.usuario.entity.Usuario;
-import br.rafael.codes.auth.usuario.service.impl.UsuarioServiceImpl;
+import br.rafael.codes.auth.usuario.service.UsuarioService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter{
     private TokenService tokenService;
 
     @Autowired
-    private UsuarioServiceImpl usuarioService;
+    private UsuarioService usuarioService;
 
     private static final List<String> PUBLIC_PATHS = List.of(
         "/auth/v1/login",
