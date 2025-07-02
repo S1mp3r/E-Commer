@@ -17,6 +17,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 
 import br.rafael.codes.auth.ControllerTestConfigurations;
 
+/**
+ * Teste Unitário para AuthController
+ * 
+ * @author Rafael Carneiro - <rafaelcarneiro1313@gmail.com>
+ * @since 02.07.2025
+ */
 @WebMvcTest(controllers = AuthController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @DisplayName("Teste Unitário para AuthController")
 public class AuthControllerTest extends ControllerTestConfigurations {

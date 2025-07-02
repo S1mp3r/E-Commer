@@ -55,6 +55,12 @@ import br.rafael.codes.auth.usuario.entity.Usuario;
 import br.rafael.codes.auth.usuario.repository.UsuarioRepository;
 import br.rafael.codes.auth.usuario.service.UsuarioService;
 
+/**
+ * Classe de Configurações de Testes de Controller. 
+ * 
+ * @author Rafael Carneiro - <rafaelcarneiro1313@gmail.com>
+ * @since 02.07.2025
+ */
 @SuppressWarnings({"removal", "unused"})
 @TestPropertySource(properties = {"EXPIRATION_TIME=999999", "JWT_SECRET_KEY=teste"})
 public abstract class ControllerTestConfigurations {
