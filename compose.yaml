@@ -1,50 +1,70 @@
 services:
-  #   backend:
-  #     image: openjdk:21-jdk-alpine
-  #     container_name: backend
-  #     ports:
-  #       - "3000:3000"
-  #     env_file:
-  #       - .env
-  #     volumes:
-  #       - ./back:/app
+  nginx:
+    image: nginx:stable
+    container_name: nginx_gateway
+    ports:
+      - "8080:80"
+    expose:
+      - "80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - auth
+      - ecommerce
 
-  #   frotend:
-  #     image: nginx:alpine
-  #     container_name: frotend
-  #     ports:
-  #       - "5500:443"
-  #     volumes:
-  #       - ./front:/usr/share/nginx/html
+  auth:
+    build:
+      context: ./back/auth
+    container_name: auth_server
+    env_file:
+      - .env
+    ports:
+      - "9000:9000"
 
-  postgres:
+  ecommerce:
+    build:
+      context: ./back/ecommerce
+    container_name: ecommerce_server
+    env_file:
+      - .env
+    ports:
+      - "8090:8090"
+
+  postgres-auth:
     image: postgres:latest
-    container_name: postgres
+    container_name: postgres-auth
     restart: unless-stopped
     env_file:
-      - .env.postgres
+      - ./back/auth/auth-container/.env.postgres.auth
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-auth:/var/lib/postgresql/data
+
+  postgres-ecommerce:
+    image: postgres:latest
+    container_name: postgres-ecommerce
+    restart: unless-stopped
+    env_file:
+      - ./back/ecommerce/e-commerce-db/.env.postgres.ecommerce
     ports:
       - "5432:5432"
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgres-ecommerce:/var/lib/postgresql/data
 
-#   redis:
-#     image: redis
-#     container_name: redis
-#     volumes:
-#       - redis:/db/redis
-
-#   mongodb:
-#     image: mongo
-#     container_name: mongodb
-#     ports:
-#       - "27017:27017"
-#     env_file:
-#       - .env.mongo
-#     volumes:
-#       - mongo:/db/mongo
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    env_file:
+      - ./back/auth/auth-container/.env.redis
+    command: ["redis-server", "--requirepass", "${DB_REDIS_PASSWORD}"]
+    volumes:
+      - redis:/db/redis
 
 volumes:
-  postgres:
-#   redis:
-#   mongo:
+  postgres-auth:
+  postgres-ecommerce:
+  redis:
