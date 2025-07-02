@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,12 +47,8 @@ public class SecurityFilter extends OncePerRequestFilter{
     @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return;
-        }
-
         String uri = request.getRequestURI();
+        System.out.println(uri);
         if (PUBLIC_PATHS.contains(uri)) {
             filterChain.doFilter(request, response);
             return;
