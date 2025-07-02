@@ -7,7 +7,6 @@ import br.rafael.codes.auth.authorization.service.AuthenticationService;
 import br.rafael.codes.auth.exceptions.DataNotFoundException;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.net.URI;
 
@@ -28,15 +27,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @since 24.06.2025
  */
 @RestController
-@RequestMapping("auth/v1")
+@RequestMapping("/auth/v1")
 public class AuthController {
 
     @Autowired
     private AuthenticationService service;
 
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> login(@RequestBody AuthenticationDTO auth) throws DataNotFoundException {
+    public ResponseEntity<?> login(@RequestBody AuthenticationDTO auth) throws DataNotFoundException, AuthenticationException {
         try {
             var userNamePassword = new UsernamePasswordAuthenticationToken(auth.getEmail(), auth.getPassword());
             String token = service.authenticate(userNamePassword);
@@ -49,11 +47,9 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> register(@RequestBody AuthenticationDTO auth) throws Exception {
         service.signUp(auth);
-
-        URI uri = URI.create("/auth/v1/login");
+        URI uri = URI.create("/auth/v1/register");
         return ResponseEntity.created(uri).build();
     }
 

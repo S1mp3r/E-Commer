@@ -5,6 +5,7 @@ import java.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public String authenticate(UsernamePasswordAuthenticationToken userToSignUp) throws DataNotFoundException {
+    public String authenticate(UsernamePasswordAuthenticationToken userToSignUp) throws DataNotFoundException, AuthenticationException {
         var authorized = authenticationManager.authenticate(userToSignUp);
 
         Usuario user = (Usuario) authorized.getPrincipal();
@@ -56,7 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     
         if(token == null || token.getExpiraEm().isBefore(Instant.now())) {
             tokenService.deleteToken(user.getId());
-            return tokenService.generateKey((Usuario) authorized.getPrincipal());
+            return tokenService.createToken((Usuario) authorized.getPrincipal());
         }
         return token.getToken();
     }

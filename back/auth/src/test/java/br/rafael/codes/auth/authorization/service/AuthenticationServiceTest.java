@@ -103,7 +103,6 @@ public class AuthenticationServiceTest extends BaseServiceTest {
 
             assertNotNull(actual, "Token nao pode ser nulo.");
             assertEquals(tokenText, actual, "O token retornado eh o salvo em banco.");
-
         }
 
         @Test
@@ -111,7 +110,7 @@ public class AuthenticationServiceTest extends BaseServiceTest {
         void sucess_authenticate_token_not_found() throws Exception {
             when(authenticationManagerMock.authenticate(any())).thenReturn(auth);
             when(tokenStorageServiceMock.findById(any())).thenReturn(Optional.empty());
-            when(tokenServiceMock.generateKey(any())).thenReturn(tokenText);
+            when(tokenServiceMock.createToken(any())).thenReturn(tokenText);
         
             final String actual = target.authenticate(any());
 
