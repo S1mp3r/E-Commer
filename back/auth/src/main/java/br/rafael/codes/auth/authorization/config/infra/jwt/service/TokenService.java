@@ -50,7 +50,7 @@ public class TokenService {
         final Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         try {
-            var token = generateKey(algorithm);
+            var token = generateKey(algorithm, user);
 
             redisTkStorageService.createToken(user, getDecodedToken(token), token);
 
@@ -66,12 +66,13 @@ public class TokenService {
      * @param algorithm
      * @return Token valido gerado.
      */
-    public String generateKey(Algorithm algorithm) {
+    public String generateKey(Algorithm algorithm, Usuario user) {
         if(algorithm == null) {
             algorithm = Algorithm.HMAC256(secretKey);
         }
 
         return JWT.create()
+            .withSubject(user.getEmail())
             .withIssuer(issuer)
             .withExpiresAt(generateExpirationDate())
             .sign(algorithm);
