@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,10 +35,19 @@ public class SecurityFilter extends OncePerRequestFilter{
     private TokenService tokenService;
 
     @Autowired
+    @Lazy
     private UsuarioService usuarioService;
+
+    private static final String PUBLIC_PATH = "/api/v1/usuario";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        String uri = request.getRequestURI();
+        if (PUBLIC_PATH.equals(uri)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         var sentToken = recoverToken(request);
         if (sentToken == null) {
             sendUnauthorized(response, HttpServletResponse.SC_UNAUTHORIZED, "Token ausente");
