@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import br.rafael.codes.auth.ServiceTestConfigurations;
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
@@ -39,6 +41,7 @@ import br.rafael.codes.auth.usuario.service.impl.UsuarioServiceImpl;
 public class UsuarioServiceTest extends ServiceTestConfigurations {
 
     private AuthenticationDTO auth;
+    private UserDetails user;
 
     @InjectMocks
     private UsuarioServiceImpl target;
@@ -54,6 +57,8 @@ public class UsuarioServiceTest extends ServiceTestConfigurations {
     @BeforeEach
     void setUp() {
         auth = mock(AuthenticationDTO.class);
+        user = mock(UserDetails.class);
+
         when(auth.getEmail()).thenReturn(email);
         when(auth.getPassword()).thenReturn(senha);
     }
@@ -132,13 +137,27 @@ public class UsuarioServiceTest extends ServiceTestConfigurations {
         }
     }
 
-    @Test
-    @DisplayName("Teste para o loadUserByUsername quando vem algo na lista")
-    void sucess_loadUser() throws Exception {
-        when(repositoryMock.findByEmail(anyString())).thenReturn(mock(UserDetails.class));
+    @Nested
+    @DisplayName("Testes para o loadUserByUsername")
+    class LoadUserByUsernameTests {
 
-        UserDetails actual = target.loadUserByUsername(email);
+        @Test
+        @DisplayName("Teste para o loadUserByUsername quando vem um usuario na lista")
+        void sucess_loadUser() throws Exception {
+            when(repositoryMock.findByEmail(anyString())).thenReturn(user);
 
-        assertNotNull(actual, "Usuário nao pode ser nulo.");
+            UserDetails actual = target.loadUserByUsername(email);
+
+            verify(repositoryMock).findByEmail(anyString());
+            assertEquals(user, actual, "Deve retornar o usuário.");
+        }
+
+        @Test
+        @DisplayName("Teste para o loadUserByUsername quando nao vem nada na lista")
+        void fail_loadUser() throws Exception {
+            when(repositoryMock.findByEmail(anyString())).thenReturn(null);
+
+            assertThrows(UsernameNotFoundException.class, () -> target.loadUserByUsername(email));
+        }
     }
 }

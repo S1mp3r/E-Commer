@@ -20,8 +20,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.client.RestTemplate;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
@@ -31,6 +33,7 @@ import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenService;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenStorageService;
 import br.rafael.codes.auth.authorization.service.impl.AuthenticationServiceImpl;
 import br.rafael.codes.auth.usuario.entity.Usuario;
+import br.rafael.codes.auth.usuario.model.UsuarioDTO;
 import br.rafael.codes.auth.usuario.service.UsuarioService;
 
 /**
@@ -62,9 +65,19 @@ public class AuthenticationServiceTest extends ServiceTestConfigurations {
     @Mock
     private TokenStorageService tokenStorageServiceMock;
 
+    @Mock
+    private ModelMapper mapperMock;
+
+    @Mock
+    private RestTemplate restTemplateMock;
+
     @BeforeEach
     void resetMocks() {
-        reset(authenticationManagerMock, usuarioServiceMock, tokenServiceMock, tokenStorageServiceMock);
+        reset(
+        authenticationManagerMock, usuarioServiceMock, 
+        tokenServiceMock, tokenStorageServiceMock,
+        mapperMock, restTemplateMock
+        );
     }
     
     @BeforeEach
@@ -85,9 +98,13 @@ public class AuthenticationServiceTest extends ServiceTestConfigurations {
     @Test
     @DisplayName("Teste para o signUp caso o usuário seja cadastrado com sucesso")
     void sucess_signUp() throws Exception {
+        when(mapperMock.map(any(), any())).thenReturn(new UsuarioDTO());
+
         target.signUp(any());
 
         verify(usuarioServiceMock).signUp(any());
+        verify(mapperMock).map(any(), any());
+        verify(restTemplateMock).postForObject(null + "/api/v1/usuario", new UsuarioDTO(), UsuarioDTO.class);
     }
 
     @Nested
