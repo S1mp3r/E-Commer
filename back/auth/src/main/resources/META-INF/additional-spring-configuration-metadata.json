@@ -14,6 +14,11 @@
       "name": "front.url",
       "type": "java.lang.String",
       "description": "The URL of the frontend"
+    },
+    {
+      "name": "api.url",
+      "type": "java.lang.String",
+      "description": "The URL of the api server E-Commerce"
     }
   ]
 }

@@ -2,12 +2,16 @@ package br.rafael.codes.auth.authorization.service.impl;
 
 import java.time.Instant;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
@@ -18,6 +22,7 @@ import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
 import br.rafael.codes.auth.authorization.service.AuthenticationService;
 import br.rafael.codes.auth.exceptions.DataNotFoundException;
 import br.rafael.codes.auth.usuario.entity.Usuario;
+import br.rafael.codes.auth.usuario.model.UsuarioDTO;
 import br.rafael.codes.auth.usuario.service.UsuarioService;
 
 /**
@@ -41,10 +46,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private TokenStorageService tokenStorageService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private ModelMapper mapper;
+
+    @Value("${api.url}")
+    private String url;
+
     @Override
     @Transactional
     public void signUp(AuthenticationDTO auth) throws Exception {
-        usuarioService.signUp(auth);
+        final Usuario registredUser = usuarioService.signUp(auth);
+
+        sentUser(registredUser);
     }
 
     @Override
@@ -69,5 +85,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Usuario sessionUser = usuarioService.findUserByEmail(tokenValidated.getSubject());
         tokenService.deleteToken(sessionUser.getId());
+    }
+
+    @Async
+    private void sentUser(Usuario user) {
+        UsuarioDTO userDTO = mapper.map(user, UsuarioDTO.class);
+        restTemplate.postForObject(url + "/api/v1/usuario", userDTO, UsuarioDTO.class);
     }
 }

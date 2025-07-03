@@ -47,8 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     @Override
     @Transactional
-    public void signUp(AuthenticationDTO auth) throws Exception {
-
+    public Usuario signUp(AuthenticationDTO auth) throws Exception {
         final Usuario usuario = new Usuario();
         usuario.setEmail(auth.getEmail());
         usuario.setPassword(
@@ -65,11 +64,15 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
             throw new UnauthorizedUserException("Usuário não autorizado.");
         }
 
-        repository.save(usuario);
+        return repository.save(usuario);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByEmail(username);
+        final UserDetails user = repository.findByEmail(username);
+        if(user == null) {
+            throw new UsernameNotFoundException("Usuário nao encontrado.");
+        }
+        return user;
     }
 }

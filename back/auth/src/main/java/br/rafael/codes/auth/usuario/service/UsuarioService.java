@@ -22,10 +22,11 @@ public interface UsuarioService {
      * Registra um novo usuário no sistema.
      * 
      * @param auth Corpo de Autenticação.
+     * @return Usuario cadastrado.
      * @throws DuplicatedDataException 
      * @throws Exception 
      */
-    void signUp(AuthenticationDTO auth) throws Exception;
+    Usuario signUp(AuthenticationDTO auth) throws Exception;
 
     /**
      * Lista todos os usuários cadastrados no sistema.
