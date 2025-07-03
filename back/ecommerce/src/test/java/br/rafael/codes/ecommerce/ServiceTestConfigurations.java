@@ -11,10 +11,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ActiveProfiles("Test")
 public abstract class ServiceTestConfigurations {
 
-    final public String email = "teste@exemplo.com";
-    final public String senha = "123456";
-    final public UUID id = UUID.randomUUID();
-    final public String tokenText = "token";
+    final public static String email = "teste@exemplo.com";
+    final public static String password = "123456";
+    final public static UUID id = UUID.randomUUID();
+    final public static String tokenText = "token";
     
     @BeforeEach
     private void resetMocks() {

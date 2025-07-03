@@ -62,9 +62,12 @@ import br.rafael.codes.ecommerce.usuario.service.UsuarioService;
 public abstract class ControllerTestConfigurations {
 
     public static final String tokenText = "token";
+    public static final String url = "/api/v1";
+    public static final String email = "teste@exemplo.com";
+    public static final String password = "123456";
     
+    public Usuario usuarioMock;
     private DecodedJWT decodedMock;
-    private Usuario usuarioMock;
 
     private static final List<String> PUBLIC_PATHS = List.of(
         "/auth/v1/login",
@@ -96,8 +99,8 @@ public abstract class ControllerTestConfigurations {
         decodedMock = mock(DecodedJWT.class);
 
         when(tokenServiceMock.validateToken(anyString())).thenReturn(decodedMock);
-        when(decodedMock.getSubject()).thenReturn(usuarioMock.getEmail());
         when(decodedMock.getExpiresAt()).thenReturn(Date.from(Instant.now().plusSeconds(3600)));
+        when(decodedMock.getSubject()).thenReturn(email);
         when(usuarioServiceMock.loadUserByUsername(anyString())).thenReturn(usuarioMock);
     }
 
@@ -115,8 +118,8 @@ public abstract class ControllerTestConfigurations {
 
     public void createValidUser() {
         usuarioMock = mock(Usuario.class);
-        usuarioMock.setEmail("teste@gmail.com");
-        usuarioMock.setPassword("123456");
+        usuarioMock.setEmail(email);
+        usuarioMock.setPassword(password);
         usuarioMock.setRole(UserRole.USER.getRole());
     }
 
