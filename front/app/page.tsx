@@ -23,7 +23,7 @@ export default function Page() {
         color="primary"
         onClick={handleClickSignIn}
       >
-        SignIn
+        Sign In
       </Button>
       <Button
         style={{ margin: "10px" }}
@@ -31,7 +31,7 @@ export default function Page() {
         color="primary"
         onClick={handleClickSignUp}
       >
-        SignUp
+        Sign Up
       </Button>
     </>
   );
