@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import br.rafael.codes.ecommerce.exceptions.DataNotFoundException;
 import br.rafael.codes.ecommerce.usuario.entity.Usuario;
+import br.rafael.codes.ecommerce.usuario.model.UsuarioDTO;
 
 /**
  * Interface de Serviço de Usuários.
@@ -40,4 +41,12 @@ public interface UsuarioService {
      * @throws UsernameNotFoundException
      */
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
+    /**
+     * Registra um novo usuário no sistema.
+     *
+     * @param entity Usuário a ser registrado.
+     * @return Usuário cadastrado.
+     */
+    Usuario createUser(UsuarioDTO entity);
 }
