@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import br.rafael.codes.ecommerce.Utils;
 import br.rafael.codes.ecommerce.config.service.jwt.TokenService;
 import br.rafael.codes.ecommerce.usuario.service.UsuarioService;
 import jakarta.servlet.FilterChain;
@@ -40,6 +41,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 
     private static final String PUBLIC_PATH = "/api/v1/usuario";
 
+    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String uri = request.getRequestURI();
@@ -48,7 +50,7 @@ public class SecurityFilter extends OncePerRequestFilter{
             return;
         }
 
-        var sentToken = recoverToken(request);
+        var sentToken = Utils.recoverToken(request);
         if (sentToken == null) {
             sendUnauthorized(response, HttpServletResponse.SC_UNAUTHORIZED, "Token ausente");
             return;
@@ -73,13 +75,6 @@ public class SecurityFilter extends OncePerRequestFilter{
 
         request.setAttribute("authentication", authentication);
         filterChain.doFilter(request, response);
-    }
-    
-    private String recoverToken(HttpServletRequest request) {
-        if(request.getHeader("Authorization") == null) {
-            return null;
-        }
-        return request.getHeader("Authorization").replace("Bearer ", "");
     }
 
     private void sendUnauthorized(HttpServletResponse response, int HttpCode, String message) throws IOException {

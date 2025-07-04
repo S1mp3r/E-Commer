@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import br.rafael.codes.auth.AuthUtils;
 import br.rafael.codes.auth.authorization.config.infra.jwt.entity.TokenJwt;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenService;
 import br.rafael.codes.auth.exceptions.DataNotFoundException;
@@ -41,19 +42,21 @@ public class SecurityFilter extends OncePerRequestFilter{
 
     private static final List<String> PUBLIC_PATHS = List.of(
         "/auth/v1/login",
-        "/auth/v1/register"
+        "/auth/v1/register",
+        "/auth/v1/logout"
     );
 
     @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String uri = request.getRequestURI();
+        System.out.println("URI: " + uri);
         if (PUBLIC_PATHS.contains(uri)) {
             filterChain.doFilter(request, response);
             return;
         }
         
-        var sentToken = recoverToken(request);
+        var sentToken = AuthUtils.recoverToken(request);
         if (sentToken == null) {
             sendUnauthorized(response ,HttpServletResponse.SC_UNAUTHORIZED, "Token ausente");
             return;
@@ -78,13 +81,6 @@ public class SecurityFilter extends OncePerRequestFilter{
 
         request.setAttribute("authentication", authentication);
         filterChain.doFilter(request, response);
-    }
-    
-    private String recoverToken(HttpServletRequest request) {
-        if(request.getHeader("Authorization") == null) {
-            return null;
-        }
-        return request.getHeader("Authorization").replace("Bearer ", "");
     }
 
     private boolean checkForTrustedData(DecodedJWT tokenValidated) {
