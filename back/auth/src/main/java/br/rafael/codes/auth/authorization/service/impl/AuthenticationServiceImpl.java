@@ -15,12 +15,14 @@ import org.springframework.web.client.RestTemplate;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import br.rafael.codes.auth.AuthUtils;
 import br.rafael.codes.auth.authorization.config.infra.jwt.entity.TokenJwt;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenService;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenStorageService;
 import br.rafael.codes.auth.authorization.models.AuthenticationDTO;
 import br.rafael.codes.auth.authorization.service.AuthenticationService;
 import br.rafael.codes.auth.exceptions.DataNotFoundException;
+import br.rafael.codes.auth.exceptions.UnauthorizedUserException;
 import br.rafael.codes.auth.usuario.entity.Usuario;
 import br.rafael.codes.auth.usuario.model.UsuarioDTO;
 import br.rafael.codes.auth.usuario.service.UsuarioService;
@@ -81,6 +83,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public void logout(String token) throws Exception {
+        if(token == null) {
+            throw new UnauthorizedUserException("Token vazio.");
+        }
+        token = AuthUtils.recoverToken(token);
         DecodedJWT tokenValidated = tokenService.validateToken(token);
 
         Usuario sessionUser = usuarioService.findUserByEmail(tokenValidated.getSubject());

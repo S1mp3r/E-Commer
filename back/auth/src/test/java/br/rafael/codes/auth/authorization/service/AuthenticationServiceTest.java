@@ -2,6 +2,7 @@ package br.rafael.codes.auth.authorization.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.reset;
@@ -32,6 +33,7 @@ import br.rafael.codes.auth.authorization.config.infra.jwt.entity.TokenJwt;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenService;
 import br.rafael.codes.auth.authorization.config.infra.jwt.service.TokenStorageService;
 import br.rafael.codes.auth.authorization.service.impl.AuthenticationServiceImpl;
+import br.rafael.codes.auth.exceptions.UnauthorizedUserException;
 import br.rafael.codes.auth.usuario.entity.Usuario;
 import br.rafael.codes.auth.usuario.model.UsuarioDTO;
 import br.rafael.codes.auth.usuario.service.UsuarioService;
@@ -151,6 +153,12 @@ public class AuthenticationServiceTest extends ServiceTestConfigurations {
             verify(tokenServiceMock).validateToken(anyString());
             verify(usuarioServiceMock).findUserByEmail(anyString());
             verify(tokenServiceMock).deleteToken(any());
+        }
+
+        @Test
+        @DisplayName("Teste para o logout caso o usuário nao seja deslogado")
+        void fail_logout() throws Exception {
+            assertThrows(UnauthorizedUserException.class, () -> target.logout(null), "Token nao pode ser nulo.");
         }
     }
 }

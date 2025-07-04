@@ -48,6 +48,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/v1/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/auth/v1/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form.disable())
