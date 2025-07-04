@@ -1,4 +1,5 @@
 "use client";
+import { AppContext } from "@components/context/AppContext";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
@@ -12,7 +13,7 @@ import {
 } from "@mui/material";
 import { ApiService } from "@services/ApiService";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export function SignInForms() {
   const [userEmail, setUserEmail] = useState("");
@@ -21,6 +22,7 @@ export function SignInForms() {
     email: "",
     password: "",
   });
+  const { setAuth } = useContext(AppContext);
 
   const route = useRouter();
 
@@ -35,6 +37,7 @@ export function SignInForms() {
 
       if (response && response.status === 201) {
         localStorage.setItem("token", response.data);
+        setAuth(true);
         route.push("/homepage");
       }
     }

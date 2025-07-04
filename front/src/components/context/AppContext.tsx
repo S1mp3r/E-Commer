@@ -7,6 +7,7 @@ export function AppContextProvider({ children }) {
   const [notify, setNotify] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [auth, setAuth] = useState(false);
 
   return (
     <AppContext.Provider
@@ -17,6 +18,8 @@ export function AppContextProvider({ children }) {
         setError,
         isLoading,
         setIsLoading,
+        auth,
+        setAuth,
       }}
     >
       {children}
