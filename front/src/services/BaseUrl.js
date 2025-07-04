@@ -45,9 +45,11 @@ export class BaseUrl {
       .catch((error) => BaseUrl.handleError(error));
   }
 
-  static async delete({ url }) {
+  static async delete({ url, isPublic }) {
     let urlToSend = process.env.NEXT_PUBLIC_BASE_URL + url;
-    return axios.delete(urlToSend).catch((error) => BaseUrl.handleError(error));
+    return axios
+      .delete(urlToSend, BaseUrl._getRequestConfig(isPublic))
+      .catch((error) => BaseUrl.handleError(error));
   }
 
   static handleError(error) {

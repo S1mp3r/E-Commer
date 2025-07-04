@@ -20,9 +20,8 @@ export class ApiService extends BaseUrl {
     });
   }
 
-  static logout() {
-    localStorage.removeItem("token");
-    return super.get({
+  static async logout() {
+    return super.delete({
       url: "/auth/v1/logout",
     });
   }
