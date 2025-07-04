@@ -50,7 +50,6 @@ public class SecurityFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String uri = request.getRequestURI();
-        System.out.println("URI: " + uri);
         if (PUBLIC_PATHS.contains(uri)) {
             filterChain.doFilter(request, response);
             return;
