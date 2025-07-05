@@ -37,7 +37,7 @@ public class UsuarioControllerTest extends ControllerTestConfigurations {
     void sucess_signUp() throws Exception {
         createValidRequest();
 
-        runPost(url + "/usuario", user, status().isCreated());
+        runPost(url + "/usuario/create", user, status().isCreated());
 
         verify(usuarioServiceMock).createUser(user);
     }

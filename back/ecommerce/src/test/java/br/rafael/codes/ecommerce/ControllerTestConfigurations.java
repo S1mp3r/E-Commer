@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -86,12 +87,16 @@ public abstract class ControllerTestConfigurations {
     @MockBean
     public UsuarioRepository usuarioRepositoryMock;
 
+    @MockBean
+    public ModelMapper modelMapperMock;
+
     @BeforeEach
     public void resetMocks() {
         reset(
             tokenServiceMock,
             usuarioServiceMock,
-            usuarioRepositoryMock);
+            usuarioRepositoryMock,
+            modelMapperMock);
     }
 
     public void createValidRequest() throws Exception {
