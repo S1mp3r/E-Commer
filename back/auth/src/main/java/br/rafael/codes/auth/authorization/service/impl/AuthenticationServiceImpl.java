@@ -96,6 +96,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Async
     private void sentUser(Usuario user) {
         UsuarioDTO userDTO = mapper.map(user, UsuarioDTO.class);
-        restTemplate.postForObject(url + "/api/v1/usuario", userDTO, UsuarioDTO.class);
+        restTemplate.postForObject(url + "/api/v1/usuario/create", userDTO, UsuarioDTO.class);
     }
 }

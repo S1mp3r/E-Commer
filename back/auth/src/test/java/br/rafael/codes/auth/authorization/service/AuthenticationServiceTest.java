@@ -106,7 +106,7 @@ public class AuthenticationServiceTest extends ServiceTestConfigurations {
 
         verify(usuarioServiceMock).signUp(any());
         verify(mapperMock).map(any(), any());
-        verify(restTemplateMock).postForObject(null + "/api/v1/usuario", new UsuarioDTO(), UsuarioDTO.class);
+        verify(restTemplateMock).postForObject(null + "/api/v1/usuario/create", new UsuarioDTO(), UsuarioDTO.class);
     }
 
     @Nested

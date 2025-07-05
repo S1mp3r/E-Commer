@@ -39,7 +39,7 @@ public class SecurityFilter extends OncePerRequestFilter{
     @Lazy
     private UsuarioService usuarioService;
 
-    private static final String PUBLIC_PATH = "/api/v1/usuario";
+    private static final String PUBLIC_PATH = "/api/v1/usuario/create";
 
     @SuppressWarnings("null")
     @Override
