@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import br.rafael.codes.ecommerce.exceptions.DataNotFoundException;
 import br.rafael.codes.ecommerce.usuario.entity.Usuario;
 import br.rafael.codes.ecommerce.usuario.model.UsuarioDTO;
+import br.rafael.codes.ecommerce.usuario.model.UsuarioResumeDTO;
 
 /**
  * Interface de Serviço de Usuários.
@@ -49,4 +50,13 @@ public interface UsuarioService {
      * @return Usuário cadastrado.
      */
     Usuario createUser(UsuarioDTO entity);
+    
+    /**
+     * Atualiza um usuário no sistema.
+     *
+     * @param entity Usuário a ser atualizado.
+     * @return Usuário atualizado.
+     * @throws DataNotFoundException 
+     */
+    Usuario updateUser(UsuarioResumeDTO entity) throws DataNotFoundException;
 }
