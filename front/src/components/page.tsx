@@ -81,13 +81,13 @@ export function GlobalPage() {
     }
   }, [token]);
 
-  if (isLoading) {
-    return (
-      <div className="fixed top-0 w-full bg-gray-100 text-center">
-        Loading...
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="fixed top-0 w-full bg-gray-100 text-center">
+  //       Loading...
+  //     </div>
+  //   );
+  // }
 
   return (
     <AppBar position="static">
