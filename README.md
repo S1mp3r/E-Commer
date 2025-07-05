@@ -109,11 +109,11 @@ docker compose up -d --build
 
 ## Checklist
 
-- ✔️ `target/` directories generated for both backend services  
-- ✔️ All `.env` files created  
-- ✔️ Docker running successfully  
-- ✔️ Redis password configured  
-- ✔️ Frontend available at `http://localhost:3000`
+- `target/` directories generated for both backend services  
+- All `.env` files created  
+- Docker running successfully  
+- Redis password configured  
+- Frontend available at `http://localhost:3000`
 
 ## Notes
 
