@@ -37,6 +37,11 @@ export function SignInForms() {
 
       if (response && response.status === 201) {
         localStorage.setItem("token", response.data);
+        ApiService.getUserInfos({ email: userEmail }).then((res) => {
+          if (res) {
+            localStorage.setItem("user", JSON.stringify(res.data));
+          }
+        });
         setAuth(true);
         route.push("/homepage");
       }

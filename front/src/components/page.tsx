@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "@components/context/AppContext";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
@@ -19,6 +19,7 @@ import {
 import Page from "./forms";
 import { ApiService } from "@services/ApiService";
 import { useRouter } from "@next/navigation";
+import { User } from "src/interfaces/User";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -32,7 +33,8 @@ export function GlobalPage() {
     null
   );
   const { auth, setAuth } = useContext(AppContext);
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState<string | null>(null);
+  const [userSession, setUserSession] = useState<User>(null);
   const route = useRouter();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -54,8 +56,22 @@ export function GlobalPage() {
     await ApiService.logout();
     handleCloseUserMenu();
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     route.push("/signin");
   };
+
+  const handleProfile = () => {
+    handleCloseUserMenu();
+    route.push("/profile");
+  };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+
+    if (storedToken) setToken(storedToken);
+    if (storedUser) setUserSession(JSON.parse(storedUser));
+  }, []);
 
   useEffect(() => {
     if (token === null) {
@@ -129,7 +145,7 @@ export function GlobalPage() {
               ))}
             </Menu>
           </Box>
-          <SvgIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          {/* <SvgIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
@@ -161,9 +177,19 @@ export function GlobalPage() {
           </Box>
           {auth ? (
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Tooltip title="Open Settings">
+                <IconButton
+                  onClick={handleOpenUserMenu}
+                  sx={{ p: 0 }}
+                  className="hover:cursor-pointer"
+                >
+                  <Typography sx={{ mr: 1 }} color="white">
+                    Hi,{" "}
+                    {userSession && userSession.firstName
+                      ? userSession.firstName
+                      : "Guest"}
+                    !
+                  </Typography>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -182,22 +208,25 @@ export function GlobalPage() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map(
-                  (setting) => (
-                    console.log(setting),
-                    setting === "Logout" ? (
-                      <MenuItem key={setting} onClick={() => handleLogout()}>
-                        <Typography sx={{ textAlign: "center" }}>
-                          {setting}
-                        </Typography>
-                      </MenuItem>
-                    ) : (
-                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography sx={{ textAlign: "center" }}>
-                          {setting}
-                        </Typography>
-                      </MenuItem>
-                    )
+                {settings.map((setting) =>
+                  setting === "Logout" ? (
+                    <MenuItem key={setting} onClick={() => handleLogout()}>
+                      <Typography sx={{ textAlign: "center" }} color="red">
+                        {setting}
+                      </Typography>
+                    </MenuItem>
+                  ) : setting === "Profile" ? (
+                    <MenuItem key={setting} onClick={() => handleProfile()}>
+                      <Typography sx={{ textAlign: "center" }}>
+                        {setting}
+                      </Typography>
+                    </MenuItem>
+                  ) : (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Typography sx={{ textAlign: "center" }}>
+                        {setting}
+                      </Typography>
+                    </MenuItem>
                   )
                 )}
               </Menu>

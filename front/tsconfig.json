@@ -22,9 +22,11 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@services/*": ["src/services/*"],
-      "@next/*": ["node_modules/next/*"]
+      "@next/*": ["node_modules/next/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@stores/*": ["stores/*"]
     }
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "src/services/BaseUrl.js"],
   "exclude": ["node_modules"]
 }

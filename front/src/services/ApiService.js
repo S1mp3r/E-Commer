@@ -31,4 +31,17 @@ export class ApiService extends BaseUrl {
       url: "/ecommerce/api/v1/init",
     });
   }
+
+  static updateUser({ user: user }) {
+    return super.put({
+      url: "/ecommerce/api/v1/usuario",
+      data: user,
+    });
+  }
+
+  static async getUserInfos({ email: email }) {
+    return super.get({
+      url: "/ecommerce/api/v1/usuario?email=" + email,
+    });
+  }
 }

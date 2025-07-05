@@ -1,5 +1,6 @@
 package br.rafael.codes.ecommerce.usuario.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import br.rafael.codes.ecommerce.location.entity.Location;
 import br.rafael.codes.ecommerce.location.service.LocationService;
 import br.rafael.codes.ecommerce.usuario.entity.Usuario;
 import br.rafael.codes.ecommerce.usuario.model.UsuarioDTO;
+import br.rafael.codes.ecommerce.usuario.model.UsuarioResumeDTO;
 import br.rafael.codes.ecommerce.usuario.repository.UsuarioRepository;
 import br.rafael.codes.ecommerce.usuario.service.UsuarioService;
 
@@ -64,7 +66,19 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
         location.setUser(user);
         user.setLocations(List.of(location));
+        user.setCreatedAt(LocalDate.now());
 
         return repository.save(user);
+    }
+
+    @Override
+    public Usuario updateUser(UsuarioResumeDTO entity) throws DataNotFoundException {
+        final Usuario user = findUserByEmail(entity.getEmail());
+        
+        final Usuario updatedUser = mapper.map(entity, Usuario.class);
+        updatedUser.setId(user.getId());
+        updatedUser.setLocations(user.getLocations());
+
+        return repository.save(updatedUser);
     }
 }

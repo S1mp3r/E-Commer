@@ -35,7 +35,6 @@ export function SignUpForms() {
       });
 
       if (response && response.status === 201) {
-        localStorage.setItem("token", response.data);
         route.push("/signin");
       }
     }
