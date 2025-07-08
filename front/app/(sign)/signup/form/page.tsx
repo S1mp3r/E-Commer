@@ -29,6 +29,13 @@ export function SignUpForms() {
       errors.password === "" &&
       errors.passwordConfirm === ""
     ) {
+      if (userPassword.length < 8 || userPassword.length > 32) {
+        setErrors((prev) => ({
+          ...prev,
+          password: "Password must be between 8 and 32 characters",
+        }));
+        return;
+      }
       const response = await ApiService.signUp({
         email: userEmail,
         password: userPassword,
