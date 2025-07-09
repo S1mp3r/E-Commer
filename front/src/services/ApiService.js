@@ -26,12 +26,6 @@ export class ApiService extends BaseUrl {
     });
   }
 
-  static test() {
-    return super.get({
-      url: "/ecommerce/api/v1/init",
-    });
-  }
-
   static updateUser({ user: user }) {
     return super.put({
       url: "/ecommerce/api/v1/usuario",
@@ -42,6 +36,19 @@ export class ApiService extends BaseUrl {
   static async getUserInfos({ email: email }) {
     return super.get({
       url: "/ecommerce/api/v1/usuario?email=" + email,
+    });
+  }
+
+  static async getPreferences() {
+    return super.get({
+      url: "/ecommerce/api/v1/preferences",
+    });
+  }
+
+  static async savePreferences({ prefs: prefs }) {
+    return super.post({
+      url: "/ecommerce/api/v1/preferences",
+      data: prefs,
     });
   }
 }

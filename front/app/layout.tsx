@@ -1,23 +1,22 @@
 // front/app/layout.jsx
 "use client";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import theme from "../theme";
 import { AppContextProvider } from "@components/context/AppContext";
 import { GlobalPage } from "@components/page";
 import { AppRouterHandler } from "@components/router/AppRouterHandler";
+import ThemeWrapper from "@components/themes/ThemeWrapper";
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
         <AppContextProvider>
           <AppRouterHandler>
             <GlobalPage />
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              {children}
-            </ThemeProvider>
+            <ThemeWrapper>{children}</ThemeWrapper>
           </AppRouterHandler>
         </AppContextProvider>
       </body>

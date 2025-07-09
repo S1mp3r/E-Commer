@@ -4,12 +4,16 @@ import {
   Card,
   FormControl,
   Grid,
+  InputAdornment,
   TextField,
   Typography,
+  Box,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ApiService } from "@services/ApiService";
+import EmailIcon from "@mui/icons-material/Email";
+import HttpsIcon from "@mui/icons-material/Https";
 
 export function SignUpForms() {
   const [userEmail, setUserEmail] = useState("");
@@ -58,71 +62,90 @@ export function SignUpForms() {
   }, [userEmail, userPassword, userPasswordConfirm]);
 
   return (
-    <>
-      <Grid
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      style={{ height: "100vh" }}
+    >
+      <Card
+        elevation={3}
+        sx={{
+          padding: 4,
+          minWidth: 400,
+          maxWidth: 450,
         }}
       >
-        <Card
-          color="primary"
-          variant="elevation"
-          style={{ textAlign: "center" }}
-        >
-          <Typography style={{ margin: "center", fontSize: 25 }}>
-            Sign In
+        <Box mb={2}>
+          <Typography variant="h5" align="center">
+            Sign Up
           </Typography>
-          <FormControl sx={{ m: 1, width: "50ch" }}>
-            <TextField
-              id="email"
-              label="Email"
-              variant="outlined"
-              required
-              size="small"
-              margin="dense"
-              onChange={(e) => setUserEmail(e.target.value)}
-              error={errors.email !== ""}
-              helperText={errors.email}
-            />
-            <TextField
-              id="password"
-              label="Password"
-              type={"password"}
-              variant="outlined"
-              required
-              size="small"
-              margin="dense"
-              onChange={(e) => setUserPassword(e.target.value)}
-              error={errors.password !== ""}
-              helperText={errors.password}
-            />
-            <TextField
-              id="passwordConfirm"
-              label="Insert the password one more time"
-              type={"password"}
-              variant="outlined"
-              required
-              size="small"
-              margin="dense"
-              onChange={(e) => setUserPasswordConfirm(e.target.value)}
-              error={errors.passwordConfirm !== ""}
-              helperText={errors.passwordConfirm}
-            />
-
-            <Button
-              variant="contained"
-              style={{ margin: "10px" }}
-              onClick={handleSubmit}
-            >
-              Sign Up
-            </Button>
-          </FormControl>
-        </Card>
-      </Grid>
-    </>
+        </Box>
+        <FormControl fullWidth>
+          <TextField
+            id="email"
+            label="Email"
+            variant="outlined"
+            required
+            onChange={(e) => setUserEmail(e.target.value)}
+            error={errors.email !== ""}
+            helperText={errors.email}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <EmailIcon />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            variant="outlined"
+            required
+            onChange={(e) => setUserPassword(e.target.value)}
+            error={errors.password !== ""}
+            helperText={errors.password}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <HttpsIcon />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            id="passwordConfirm"
+            label="Insert the password one more time"
+            type="password"
+            variant="outlined"
+            required
+            onChange={(e) => setUserPasswordConfirm(e.target.value)}
+            error={errors.passwordConfirm !== ""}
+            helperText={errors.passwordConfirm}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <HttpsIcon />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ mb: 2 }}
+          />
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            fullWidth
+            sx={{ mt: 1 }}
+          >
+            Sign Up
+          </Button>
+        </FormControl>
+      </Card>
+    </Grid>
   );
 }
 

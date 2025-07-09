@@ -1,3 +1,5 @@
+import { Location } from "./Location";
+
 export interface User {
   firstName: string;
   lastName: string;
@@ -5,4 +7,5 @@ export interface User {
   cellPhoneNumber: string;
   cpf: string;
   birthDate: string;
+  locations: Location[];
 }

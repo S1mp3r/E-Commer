@@ -10,10 +10,13 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  Box,
 } from "@mui/material";
 import { ApiService } from "@services/ApiService";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import EmailIcon from "@mui/icons-material/Email";
+import HttpsIcon from "@mui/icons-material/Https";
 
 export function SignInForms() {
   const [userEmail, setUserEmail] = useState("");
@@ -22,7 +25,7 @@ export function SignInForms() {
     email: "",
     password: "",
   });
-  const { setAuth } = useContext(AppContext);
+  const { setAuth, setBtnColor, setBgColor } = useContext(AppContext);
 
   const route = useRouter();
 
@@ -40,6 +43,13 @@ export function SignInForms() {
         ApiService.getUserInfos({ email: userEmail }).then((res) => {
           if (res) {
             localStorage.setItem("user", JSON.stringify(res.data));
+          }
+        });
+        ApiService.getPreferences().then((res) => {
+          if (res) {
+            localStorage.setItem("prefs", JSON.stringify(res.data));
+            setBtnColor(res.data.btnColor);
+            setBgColor(res.data.bgColor);
           }
         });
         setAuth(true);
@@ -71,68 +81,84 @@ export function SignInForms() {
   }, [userEmail, userPassword]);
 
   return (
-    <>
-      <Grid
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      sx={{ height: "100vh" }}
+    >
+      <Card
+        elevation={3}
+        sx={{
+          padding: 4,
+          minWidth: 400,
+          maxWidth: 450,
         }}
       >
-        <Card
-          color="primary"
-          variant="elevation"
-          style={{ textAlign: "center" }}
-        >
-          <Typography style={{ margin: "center", fontSize: 25 }}>
+        <Box mb={2}>
+          <Typography variant="h5" align="center">
             Sign In
           </Typography>
-          <FormControl sx={{ m: 1, width: "50ch" }}>
-            <TextField
-              id="email"
-              label="Email"
-              variant="outlined"
-              required
-              size="small"
-              margin="dense"
-              onChange={(e) => setUserEmail(e.target.value)}
-              error={errors.email !== ""}
-              helperText={errors.email}
-            />
-            <TextField
-              id="password"
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              variant="outlined"
-              required
-              size="small"
-              margin="dense"
-              onChange={(e) => setUserPassword(e.target.value)}
-              error={errors.password !== ""}
-              helperText={errors.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      onMouseUp={handleMouseUpPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button variant="contained" onClick={handleSubmit}>
-              Sign In
-            </Button>
-          </FormControl>
-        </Card>
-      </Grid>
-    </>
+        </Box>
+        <FormControl fullWidth>
+          <TextField
+            id="email"
+            label="Email"
+            variant="outlined"
+            required
+            onChange={(e) => setUserEmail(e.target.value)}
+            error={errors.email !== ""}
+            helperText={errors.email}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <EmailIcon />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            id="password"
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            variant="outlined"
+            required
+            onChange={(e) => setUserPassword(e.target.value)}
+            error={errors.password !== ""}
+            helperText={errors.password}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <HttpsIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            sx={{ mb: 2 }}
+          />
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            fullWidth
+            sx={{ mt: 1 }}
+          >
+            Sign In
+          </Button>
+        </FormControl>
+      </Card>
+    </Grid>
   );
 }
 

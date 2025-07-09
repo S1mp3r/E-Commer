@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Container,
+  Grid,
   IconButton,
   Menu,
   MenuItem,
@@ -20,9 +21,12 @@ import Page from "./forms";
 import { ApiService } from "@services/ApiService";
 import { useRouter } from "@next/navigation";
 import { User } from "src/interfaces/User";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Dashboard", "Logout"];
 
 export function GlobalPage() {
   const { isLoading } = useContext(AppContext);
@@ -211,21 +215,30 @@ export function GlobalPage() {
                 {settings.map((setting) =>
                   setting === "Logout" ? (
                     <MenuItem key={setting} onClick={() => handleLogout()}>
-                      <Typography sx={{ textAlign: "center" }} color="red">
-                        {setting}
-                      </Typography>
+                      <Grid container>
+                        <LogoutIcon color="error" />
+                        <Typography sx={{ textAlign: "center" }} color="error">
+                          {setting}
+                        </Typography>
+                      </Grid>
                     </MenuItem>
                   ) : setting === "Profile" ? (
                     <MenuItem key={setting} onClick={() => handleProfile()}>
-                      <Typography sx={{ textAlign: "center" }}>
-                        {setting}
-                      </Typography>
+                      <Grid container>
+                        <AccountCircleIcon />
+                        <Typography sx={{ textAlign: "center" }}>
+                          {setting}
+                        </Typography>
+                      </Grid>
                     </MenuItem>
                   ) : (
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography sx={{ textAlign: "center" }}>
-                        {setting}
-                      </Typography>
+                      <Grid container>
+                        <DashboardIcon />
+                        <Typography sx={{ textAlign: "center" }}>
+                          {setting}
+                        </Typography>
+                      </Grid>
                     </MenuItem>
                   )
                 )}
