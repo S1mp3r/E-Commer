@@ -6,15 +6,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.rafael.codes.ecommerce.exceptions.DataNotFoundException;
+import br.rafael.codes.ecommerce.usuario.entity.Usuario;
 import br.rafael.codes.ecommerce.usuario.model.UsuarioDTO;
 import br.rafael.codes.ecommerce.usuario.model.UsuarioResumeDTO;
 import br.rafael.codes.ecommerce.usuario.service.UsuarioService;
+
+import java.net.URI;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,11 +58,15 @@ public class UsuarioController {
     }
 
     @PutMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public void updateUser(@RequestBody UsuarioResumeDTO entity) throws DataNotFoundException {
+    public ResponseEntity<?> updateUser(@RequestBody UsuarioResumeDTO entity) throws DataNotFoundException {
         logger.info("Updating user: {}", entity);
-        service.updateUser(entity);
-        logger.info("Update completed.");
+        final Usuario user = service.updateUser(entity);
+
+        URI uri = URI.create("/api/v1/usuario");
+        logger.info("Update completed, new User is: {}", user);
+        logger.info("mapped user", mapper.map(user, UsuarioResumeDTO.class));
+
+        return ResponseEntity.created(uri).body(mapper.map(user, UsuarioResumeDTO.class));
     }
     
 }

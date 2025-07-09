@@ -20,6 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * Classe de Entidade de Usuários.
@@ -31,6 +32,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "USUARIOS")
 @Data
 @EqualsAndHashCode(of = "id")
+@ToString(exclude = "locations")
 public class Usuario implements UserDetails{
     
     @Id

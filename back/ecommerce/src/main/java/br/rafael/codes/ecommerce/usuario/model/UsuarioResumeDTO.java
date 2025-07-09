@@ -19,6 +19,4 @@ public class UsuarioResumeDTO {
     
     private List<LocationDTO> locations;
 
-    private LocalDate createdAt;
-    
 }

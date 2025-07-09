@@ -78,6 +78,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
         final Usuario updatedUser = mapper.map(entity, Usuario.class);
         updatedUser.setId(user.getId());
         updatedUser.setLocations(user.getLocations());
+        updatedUser.setCreatedAt(user.getCreatedAt());
 
         return repository.save(updatedUser);
     }
