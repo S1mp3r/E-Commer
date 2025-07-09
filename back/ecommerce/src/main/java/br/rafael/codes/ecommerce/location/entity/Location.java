@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * Classe de Entidade de Localização.
@@ -26,6 +27,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "LOCALIZACOES")
 @EqualsAndHashCode(of = "id")
+@ToString(exclude = "user")
 public class Location {
     
     @Id
