@@ -56,6 +56,16 @@ POSTGRES_USER=user
 POSTGRES_PASSWORD=password
 ```
 
+#### .env for Mongo
+
+**Path:** `./back/ecommerce/e-commerce-db/.env.mongodb`
+
+```env
+MONGO_INITDB_ROOT_USERNAME=user
+MONGO_INITDB_ROOT_PASSWORD=password
+MONGO_INITDB_DATABASE=database
+```
+
 #### .env for Redis
 
 **Path:** `./back/auth/.env.redis`
@@ -97,6 +107,34 @@ DB_REDIS_PASSWORD=your_redis_password
 # URLs
 FRONT_URL=http://localhost:3000
 API_URL=http://nginx/ecommerce
+
+# Mongo
+MONGO_URI=mongodb://user:password@container-name:27017/ecommerce?authSource=collection
+```
+
+## MongoSh
+
+```mongosh
+open your docker desktop or execute via cli
+
+# Docker Desktop
+mongosh
+use admin
+db.createUser({
+  user: "admin",
+  pwd: "admin123",
+  roles: [{ role: "root", db: "admin" }]
+})
+
+#OR
+
+docker exec -it mongodb mongosh
+use admin
+db.createUser({
+  user: "admin",
+  pwd: "admin123",
+  roles: [{ role: "root", db: "admin" }]
+})
 ```
 
 ## Launching with Docker
