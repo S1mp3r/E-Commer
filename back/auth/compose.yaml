@@ -1,0 +1,43 @@
+services:
+  auth:
+    build:
+      context: .
+    env_file:
+      - ./auth-container/.env
+    ports:
+      - "9000:9000"
+    networks:
+      - nginx
+
+  postgres-auth:
+    image: postgres:latest
+    restart: unless-stopped
+    env_file:
+      - ./auth-container/.env.postgres.auth
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-auth:/var/lib/postgresql/data
+    networks:
+      - nginx
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    env_file:
+      - ./auth-container/.env.redis
+    command: ["redis-server", "--requirepass", "${DB_REDIS_PASSWORD}"]
+    volumes:
+      - redis:/db/redis
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    external: true
+
+volumes:
+  postgres-auth:
+  redis:

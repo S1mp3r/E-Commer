@@ -1,0 +1,42 @@
+services:
+  ecommerce:
+    build:
+      context: .
+    env_file:
+      - ./e-commerce-db/.env
+    ports:
+      - "8090:8090"
+    networks:
+      - nginx
+
+  postgres-ecommerce:
+    image: postgres:latest
+    restart: unless-stopped
+    env_file:
+      - ./e-commerce-db/.env.postgres.ecommerce
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-ecommerce:/var/lib/postgresql/data
+    networks:
+      - nginx
+
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    env_file:
+      - ./e-commerce-db/.env.mongodb
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    external: true
+
+volumes:
+  postgres-ecommerce:
+  mongodb:
