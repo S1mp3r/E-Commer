@@ -18,14 +18,19 @@ export const AppContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [bgColor, setBgColor] = useState(
-    JSON.parse(localStorage.getItem("prefs"))?.bgColor || "#ffffff"
-  );
-  const [btnColor, setBtnColor] = useState(
-    JSON.parse(localStorage.getItem("prefs"))?.btnColor || "#1976d2"
-  );
+  const [bgColor, setBgColor] = useState("#ffffff");
+  const [btnColor, setBtnColor] = useState("#1976d2");
   const [auth, setAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // Nao lembro pq fiz isso, mas acho q era por conta do LocalStorage ta sendo acessado no SSR
+    if (typeof window !== "undefined") {
+      const prefs = JSON.parse(localStorage.getItem("prefs") || "{}");
+      if (prefs.bgColor) setBgColor(prefs.bgColor);
+      if (prefs.btnColor) setBtnColor(prefs.btnColor);
+    }
+  }, []);
 
   return (
     <AppContext.Provider
